@@ -1,12 +1,11 @@
 package main
 
 import (
-	"pluralsight-go-fundamentals/slices"
+	"pluralsight-go-fundamentals/concurrency"
 )
 
 func main() {
 
-	//slices
-	slices.SliceReferenceExamples()
+	concurrency.ConcurrentFunc()
 
 }
