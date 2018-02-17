@@ -1,11 +1,11 @@
 package main
 
 import (
-	"pluralsight-go-fundamentals/concurrency"
+	"pluralsight-go-fundamentals/types"
 )
 
 func main() {
 
-	concurrency.ConcurrentFunc()
+	types.TypeDemo()
 
 }

@@ -1,6 +1,9 @@
-package structs
+package types
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 type familyMember struct {
 	FirstName string
@@ -25,4 +28,13 @@ func StructExample() {
 	fmt.Println(famMember)
 	fmt.Println(fam)
 	fmt.Println(fam2)
+}
+
+//Name has string underlying it
+type Name string
+
+//TypeDemo prints TypeOf info of name:Name
+func TypeDemo() {
+	var name Name = "Jacob"
+	fmt.Println(name, "is of type", reflect.TypeOf(name))
 }
