@@ -2,12 +2,14 @@ package concurrency
 
 import (
 	"fmt"
+	"runtime"
 	"sync"
 	"time"
 )
 
 //ConcurrentFunc illustrates concurrency
 func ConcurrentFunc() {
+	runtime.GOMAXPROCS(2) // parallelism
 	var waitGrp sync.WaitGroup
 	waitGrp.Add(2)
 	go func() {
