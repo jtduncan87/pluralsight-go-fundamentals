@@ -5,11 +5,20 @@ import (
 	"reflect"
 )
 
+const pi = 3.14
+
+const (
+	pi2 = 3.14
+)
+
 type familyMember struct {
 	FirstName string
 	LastName  string
 	Age       int
 }
+
+//Name has string underlying it
+type name string
 
 //StructExample illustrates structs
 func StructExample() {
@@ -30,11 +39,13 @@ func StructExample() {
 	fmt.Println(fam2)
 }
 
-//Name has string underlying it
-type Name string
-
 //TypeDemo prints TypeOf info of name:Name
 func TypeDemo() {
-	var name Name = "Jacob"
-	fmt.Println(name, "is of type", reflect.TypeOf(name))
+	var _name name = "Jacob"
+	fmt.Println(_name, "is of type", reflect.TypeOf(_name))
+}
+
+//ConstDemo demonstrates the usage of consts
+func ConstDemo() {
+	fmt.Println(pi, "is from a single const-prefixed declaration;", pi2, "is from a () declaration")
 }

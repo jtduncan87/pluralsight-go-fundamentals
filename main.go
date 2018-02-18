@@ -1,11 +1,9 @@
 package main
 
-import (
-	"pluralsight-go-fundamentals/types"
-)
+import "pluralsight-go-fundamentals/functions"
 
 func main() {
 
-	types.TypeDemo()
+	functions.GreetFunc()
 
 }
