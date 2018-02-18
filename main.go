@@ -4,6 +4,6 @@ import "pluralsight-go-fundamentals/functions"
 
 func main() {
 
-	functions.GreetFunc()
+	functions.GreetMain()
 
 }
