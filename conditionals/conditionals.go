@@ -5,6 +5,9 @@ import (
 	"os"
 )
 
+//SomeType for passing to SwitchOnType
+type SomeType int
+
 //IfElseAndSwitchExample illustrates control flow
 func IfElseAndSwitchExample() {
 
@@ -32,5 +35,19 @@ func IfElseAndSwitchExample() {
 		fmt.Println("There was an error:", err)
 	} else {
 		fmt.Println("There wasn't error:", err)
+	}
+}
+
+//SwitchOnType illustrates switching on types
+func SwitchOnType(x interface{}) {
+	switch x.(type) {
+	case int:
+		fmt.Println("int")
+	case float32:
+		fmt.Println("float32")
+	case SomeType:
+		fmt.Println("SomeType")
+	default:
+		fmt.Println("Unknown")
 	}
 }

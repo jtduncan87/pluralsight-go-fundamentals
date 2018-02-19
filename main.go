@@ -1,9 +1,7 @@
 package main
 
-import "pluralsight-go-fundamentals/functions"
+import "pluralsight-go-fundamentals/maps"
 
 func main() {
-
-	functions.GreetMain()
-
+	maps.CheckMapForExistance()
 }
