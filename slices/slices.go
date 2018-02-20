@@ -5,6 +5,8 @@ import (
 	"strconv"
 )
 
+type sliceWrapper []int
+
 //SliceItUp demonstrates slices
 func SliceItUp() {
 	myBooks := make([]string, 5, 10)
@@ -28,7 +30,7 @@ func SliceItUp() {
 	}
 }
 
-//SliceReferenceExamples illustrates slice references and appends
+//SliceReferenceExamples illustrates slice references and appends, also demonstrates shorthand of slice initialization
 func SliceReferenceExamples() {
 	mySlice := []int{1, 3, 4}
 	fmt.Println(mySlice)
@@ -37,4 +39,19 @@ func SliceReferenceExamples() {
 	mySlice = append(mySlice, newSlice...)
 	fmt.Println(mySlice)
 
+	fmt.Println("Changing index 1 of slice: ")
+	newSlice[1] = 4
+	fmt.Println(newSlice)
+
+}
+
+type sliceOfInts []int
+
+//DeleteFromSliceExample illustrates deleting from a slice
+func DeleteFromSliceExample() {
+	slice := sliceOfInts{1, 2, 3, 4}
+	fmt.Println("Before:", slice)
+	//slice.deleteFromSlice(1)
+	slice = append(slice[:1], slice[1+1:]...)
+	fmt.Println("After:", slice)
 }

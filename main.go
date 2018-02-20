@@ -1,7 +1,7 @@
 package main
 
-import "pluralsight-go-fundamentals/maps"
+import "pluralsight-go-fundamentals/interfaces"
 
 func main() {
-	maps.CheckMapForExistance()
+	interfaces.InterfaceExample()
 }
