@@ -33,7 +33,7 @@ func InterfaceExample() {
 	sports[1] = baseball{}
 	sports[2] = basketball{}
 
-	for i := range sports {
-		fmt.Println(cheerForTheSport(sports[i]))
+	for _, sport := range sports {
+		fmt.Println(cheerForTheSport(sport))
 	}
 }
