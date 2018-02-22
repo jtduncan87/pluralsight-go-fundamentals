@@ -1,7 +1,7 @@
 package main
 
-import "pluralsight-go-fundamentals/interfaces"
+import "pluralsight-go-fundamentals/concurrency"
 
 func main() {
-	interfaces.InterfaceExample()
+	concurrency.IterateChannelExample()
 }
