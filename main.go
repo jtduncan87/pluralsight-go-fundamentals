@@ -1,7 +1,7 @@
 package main
 
-import "pluralsight-go-fundamentals/concurrency"
+import "pluralsight-go-fundamentals/concurrency/concurrentProgrammingInGo"
 
 func main() {
-	concurrency.IterateChannelExample()
+	concurrentProgrammingInGo.FileWatcherMain()
 }
