@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -40,12 +41,18 @@ func transformOrders(extractCh, transCh chan *order) {
 		prod.unitPrice, _ = strconv.ParseFloat(record[2], 64)
 		productList[prod.partNumber] = prod
 	}
+	wg := new(sync.WaitGroup)
 	for o := range extractCh {
-		time.Sleep(3 * time.Millisecond) // simulate webservice call
-		o.unitCost = productList[o.partNumber].unitCost
-		o.unitPrice = productList[o.partNumber].unitPrice
-		transCh <- o
+		wg.Add(1)
+		go func(o *order) {
+			time.Sleep(3 * time.Millisecond) // simulate webservice call
+			o.unitCost = productList[o.partNumber].unitCost
+			o.unitPrice = productList[o.partNumber].unitPrice
+			transCh <- o
+			wg.Done()
+		}(o)
 	}
+	wg.Wait()
 	close(transCh)
 }
 func loadOrders(transCh chan *order, doneCh chan bool) {
@@ -53,12 +60,18 @@ func loadOrders(transCh chan *order, doneCh chan bool) {
 	defer f.Close()
 	fmt.Fprintf(f, "%20s%15s%12s%12s%15s%15s\n", "Part Number", "Quantity", "Unit Cost",
 		"Unit Price", "Total Cost", "Total Price")
+	wg := new(sync.WaitGroup)
 	for o := range transCh {
-		time.Sleep(1 * time.Millisecond) //delay simulation
-		fmt.Fprintf(f, "%20s %15d %12.2f %12.2f %15.2f %15.2f\n", o.partNumber, o.quantity, o.unitCost, o.unitPrice,
-			o.unitCost*float64(o.quantity),
-			o.unitPrice*float64(o.quantity))
+		wg.Add(1)
+		go func(o *order) {
+			time.Sleep(1 * time.Millisecond) //delay simulation
+			fmt.Fprintf(f, "%20s %15d %12.2f %12.2f %15.2f %15.2f\n", o.partNumber, o.quantity, o.unitCost, o.unitPrice,
+				o.unitCost*float64(o.quantity),
+				o.unitPrice*float64(o.quantity))
+			wg.Done()
+		}(o)
 	}
+	wg.Wait()
 	doneCh <- true
 }
 
