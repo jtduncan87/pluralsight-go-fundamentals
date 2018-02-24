@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+//AsyncWebService demonstrates pulling data from the web
 func AsyncWebService() {
 	runtime.GOMAXPROCS(4)
 	tickerSymbols := []string{
