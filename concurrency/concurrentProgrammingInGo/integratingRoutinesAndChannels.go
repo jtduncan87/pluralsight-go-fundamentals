@@ -155,6 +155,8 @@ func PipeAndFilterExample() {
 }
 
 //ExtractTransformAndLoadExample demeonstrates the ETL pattern
+//original implementation ran 20s
+//2nd with goroutines and channels: 13.92s
 func ExtractTransformAndLoadExample() {
 	start := time.Now()
 	extractCh := make(chan *order)
