@@ -12,8 +12,7 @@ const (
 	productListLocation = "./resources/productList.txt"
 )
 
-func extractOrders() []*order {
-	result := []*order{}
+func extractOrders(ch chan *order) {
 	f, _ := os.Open("./resources/orders.txt")
 	defer f.Close()
 
@@ -23,12 +22,12 @@ func extractOrders() []*order {
 		ord.customerNumber, _ = strconv.Atoi(record[0])
 		ord.partNumber = record[1]
 		ord.quantity, _ = strconv.Atoi(record[2])
-		result = append(result, ord)
+		ch <- ord
 	}
-	return result
+	close(ch)
 }
 
-func transformOrders(orders []*order) []*order {
+func transformOrders(extractCh, transCh chan *order) {
 	f, _ := os.Open(productListLocation)
 	defer f.Close()
 	r := csv.NewReader(f)
@@ -41,25 +40,26 @@ func transformOrders(orders []*order) []*order {
 		prod.unitPrice, _ = strconv.ParseFloat(record[2], 64)
 		productList[prod.partNumber] = prod
 	}
-	for idx := range orders {
+	for o := range extractCh {
 		time.Sleep(3 * time.Millisecond) // simulate webservice call
-		o := orders[idx]
 		o.unitCost = productList[o.partNumber].unitCost
 		o.unitPrice = productList[o.partNumber].unitPrice
+		transCh <- o
 	}
-	return orders
+	close(transCh)
 }
-func loadOrders(orders []*order) {
+func loadOrders(transCh chan *order, doneCh chan bool) {
 	f, _ := os.Create("./resources/orderDestination.txt")
 	defer f.Close()
 	fmt.Fprintf(f, "%20s%15s%12s%12s%15s%15s\n", "Part Number", "Quantity", "Unit Cost",
 		"Unit Price", "Total Cost", "Total Price")
-	for _, o := range orders {
+	for o := range transCh {
 		time.Sleep(1 * time.Millisecond) //delay simulation
 		fmt.Fprintf(f, "%20s %15d %12.2f %12.2f %15.2f %15.2f\n", o.partNumber, o.quantity, o.unitCost, o.unitPrice,
 			o.unitCost*float64(o.quantity),
 			o.unitPrice*float64(o.quantity))
 	}
+	doneCh <- true
 }
 
 type product struct {

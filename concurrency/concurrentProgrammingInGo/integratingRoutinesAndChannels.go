@@ -157,8 +157,12 @@ func PipeAndFilterExample() {
 //ExtractTransformAndLoadExample demeonstrates the ETL pattern
 func ExtractTransformAndLoadExample() {
 	start := time.Now()
-	orders := extractOrders()
-	orders = transformOrders(orders)
-	loadOrders(orders)
+	extractCh := make(chan *order)
+	transCh := make(chan *order)
+	doneCh := make(chan bool)
+	go extractOrders(extractCh)
+	go transformOrders(extractCh, transCh)
+	go loadOrders(transCh, doneCh)
+	<-doneCh
 	fmt.Println(time.Since(start))
 }
