@@ -136,3 +136,29 @@ func PromiseExample() {
 
 	fmt.Scanln()
 }
+
+//PipeAndFilterExample simulates filtering primes
+func PipeAndFilterExample() {
+	ch := make(chan int)
+	go primeGenerate(ch)
+	for {
+		prime := <-ch
+		fmt.Println(prime)
+		ch1 := make(chan int)
+		go primeFilter(ch, ch1, prime)
+		ch = ch1
+
+		if prime > 100 {
+			return
+		}
+	}
+}
+
+//ExtractTransformAndLoadExample demeonstrates the ETL pattern
+func ExtractTransformAndLoadExample() {
+	start := time.Now()
+	orders := extractOrders()
+	orders = transformOrders(orders)
+	loadOrders(orders)
+	fmt.Println(time.Since(start))
+}

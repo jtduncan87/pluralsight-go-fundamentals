@@ -2,6 +2,7 @@ package concurrentProgrammingInGo
 
 import (
 	"errors"
+	"time"
 )
 
 type promise struct {
@@ -14,6 +15,7 @@ func savePOWithPromise(po *purchaseOrder, shouldFail bool) *promise {
 	result.successCh = make(chan interface{}, 1)
 	result.failureCh = make(chan error, 1)
 	go func() {
+		time.Sleep(2 * time.Second)
 		if shouldFail {
 			result.failureCh <- errors.New("Failed to save purchase order")
 		} else {
@@ -28,6 +30,7 @@ func (this *promise) then(success func(interface{}) error, failure func(error)) 
 	result := new(promise)
 	result.successCh = make(chan interface{}, 1)
 	result.failureCh = make(chan error, 1)
+	timeout := time.After(1 * time.Second)
 	go func() {
 		select {
 		case obj := <-this.successCh:
@@ -40,6 +43,8 @@ func (this *promise) then(success func(interface{}) error, failure func(error)) 
 		case err := <-this.failureCh:
 			failure(err)
 			result.failureCh <- err
+		case <-timeout:
+			failure(errors.New("Timeout occurred!"))
 		}
 	}()
 	return result
